@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TS2 Client – Portale dell’Avventuriero</title>
-
+	<script 
+	  src="https://www.paypal.com/sdk/js?client-id=BAA5xN_mgkc0dKRG1WtRFUn8EFA4Q_BlUqNpqqIdgJmYNdVoD9VrbYOHxeEYURkRNsY49z9yihuKBIEwcw&components=hosted-buttons&disable-funding=venmo&currency=EUR">
+	</script>
   <style>
     body {
       margin: 0;
@@ -62,6 +64,19 @@
       box-shadow: 0 0 10px #000;
     }
 
+.contrib {
+background: rgba(30, 20, 15, 0.85);
+      padding: 25px;
+      margin-bottom: 40px;
+      border-radius: 10px;
+      border: 2px solid #3f3b35;
+      box-shadow: 0 0 12px rgba(0,0,0,0.6);
+    background-color: #8b6f47;
+    float: right;
+    position: absolute;
+    right: 25px;
+    top: 25px;
+}
     .release {
       background: rgba(30, 20, 15, 0.85);
       padding: 25px;
@@ -204,12 +219,14 @@
 	  </p>
 	  <p class="pcenter">
 		Puoi aggiungerlo alla barra delle applicazioni per accederci più facilmente.<br>Oppure se vuoi proprio lanciarlo localmente come una applicazione classica, procedi a scaricare dalla sezione in basso.
-		<div id="paypal-container-XF3YPVYKFERC2"></div>
-		<script>
-		  paypal.HostedButtons({
-			hostedButtonId: "XF3YPVYKFERC2",
-		  }).render("#paypal-container-XF3YPVYKFERC2")
-		</script>
+		<div class="contrib">
+		  <style>.pp-XF3YPVYKFERC2{text-align:center;border:none;border-radius:1.5rem;min-width:11.625rem;padding:0 2rem;height:2rem;font-weight:bold;background-color:#FFD140;color:#000000;font-family:"Helvetica Neue",Arial,sans-serif;font-size:0.875rem;line-height:1.125rem;cursor:pointer;}</style>
+		  <form action="https://www.paypal.com/ncp/payment/XF3YPVYKFERC2" method="post" target="_blank" style="display:inline-grid;justify-items:center;align-content:start;gap:0.5rem;">
+			<input class="pp-XF3YPVYKFERC2" type="submit" value="Contribuisci" />
+			<img src=https://www.paypalobjects.com/images/Debit_Credit_APM.svg alt="cards" />
+			<section style="font-size: 0.75rem;"> Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;"/></section>
+		  </form>
+		</div>
 	  </p>
     </div>
 
