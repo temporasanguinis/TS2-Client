@@ -45,8 +45,15 @@
     }
 	
 	h2 {
-		margin: 0px 15px 10px 15px;
+		margin: 0px 15px 15px 15px;
 		color: #cc9b9b;
+	}
+	
+	.gh {
+		all: unset;
+		color: #cc9b9b;
+		text-decoration: underline;
+		cursor: pointer;
 	}
 	
 	h3 {
@@ -132,7 +139,8 @@ background: rgba(30, 20, 15, 0.85);
     }
 
 	a {
-	padding: 4px;
+		vertical-align: bottom;
+		padding: 4px;
 		background: #8b6f47;
 		color: white;
 		font-size: 14px;
@@ -202,7 +210,10 @@ background: rgba(30, 20, 15, 0.85);
 		display: block; text-align: right;
 	}
 	.play {
+		width: 250px;
 		padding: 10px;
+		font-weight: bold;
+		font-size: 18px;
 	}
   </style>
 </head>
@@ -237,7 +248,7 @@ background: rgba(30, 20, 15, 0.85);
     </div>
 
     <div class="section">
-      <h2>Scarica il client binario (eseguibile)</h2>
+      <h2>Scarica il client eseguibile oppure <a class="gh" href="https://github.com/temporasanguinis/TS2-Client">contribuisci tramite Github</a></h2>
 
       <div id="latest-release">
         <div class="loading">Caricamento ultima release…</div>
@@ -289,7 +300,6 @@ background: rgba(30, 20, 15, 0.85);
     function renderRelease(rel) {
       const div = document.createElement("div");
       div.className = "release";
-
       div.innerHTML = `
 	  <div class="release-header">
 		<span class="release-title">${rel.name || rel.tag_name}</span>
@@ -311,8 +321,46 @@ background: rgba(30, 20, 15, 0.85);
 
           platforms[platform].forEach(a => {
             const asset = document.createElement("div");
+			let name = a.name;
+			  let title = ""
+			  if (name.includes("win")) {
+				title += "Windows"
+			  } else if (name.includes("linux")) {
+				title += "Linux"
+			  } else if (name.includes("mac")) {
+				title += "Mac"
+			  }
+			  title += " "
+			  if (name.includes("arm")) {
+				title += "Arm64"
+			  } else if (name.includes("64")) {
+				title += "x64"
+			  } else if (name.includes("86")) {
+				title += "x86"
+			  }
+			  title += " "
+			  if (name.includes(".deb")) {
+				title += "Debian (deb)"
+			  } else if (name.includes(".rpm")) {
+				title += "RedHat (rpm)"
+			  }	  
+			  
+			  title += " "
+			  if (name.includes(".blockmap")) {
+				title += "(dmg blockmap)"
+			  } else if (name.includes(".dmg")) {
+				title += "(dmg)"
+			  } else if (name.includes(".zip")) {
+				title += "(zip)"
+			  } else if (name.includes(".exe")) {
+				title += "(exe)"
+			  }	 else if (name.includes(".yml")) {
+				title += "(yaml)"
+			  }	    
+			  
+			  
             asset.className = "asset";
-            asset.innerHTML = `<a href="${a.browser_download_url}" download>${a.name}</a>`;
+            asset.innerHTML = `<a href="${a.browser_download_url}" download>${title}</a>`;
             pDiv.appendChild(asset);
           });
 
