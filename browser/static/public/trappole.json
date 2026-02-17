@@ -52,5 +52,7 @@
   {"long": "Noti una stranezza sul muro...", "key":"trappola"},
   {"long": "Le fronde degli alberi malati si aggrovigliano intorno a te.", "key":"fronde"},
   {"long": "Un cespuglio composto da numerose Tife ricopre interamente il terreno.", "key":"cespuglio"},
-  {"long": "Una trappola molto strana e pericolosa giace qui in terra.", "key":"trappola"}
+  {"long": "Una trappola molto strana e pericolosa giace qui in terra.", "key":"trappola"},
+  {"long": "Una piccola moneta giace qui in terra.", "key":"moneta"},
+  {"long": "Vedi pietre pericolanti sopra di te.", "key":"pietre"}
 ]

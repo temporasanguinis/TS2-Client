@@ -1616,10 +1616,10 @@
       "enabled": true,
       "id": "",
       "is_prompt": false,
-      "is_script": false,
+      "is_script": true,
       "pattern": "^Il tuo sangue si raggela non appena senti il grido di morte di il vecchio elfo",
       "regex": true,
-      "value": "get sigillo vecchio"
+      "value": "if (!this.isCapogruppo(this.TSPersonaggio)) return;\nsend('get sigillo vecchio')\n"
     },
     {
       "class": "zone:4",
@@ -1646,20 +1646,20 @@
       "enabled": true,
       "id": "",
       "is_prompt": false,
-      "is_script": false,
+      "is_script": true,
       "pattern": "^C'e' un piccolo mobiletto in un angolo",
       "regex": true,
-      "value": "pick mobiletto\nopen mobiletto\nget chiave mobiletto"
+      "value": "if (!this.isCapogruppo(this.TSPersonaggio)) return;\nsend('pick mobiletto');\nsend('open mobiletto');\nsend('get chiave mobiletto');\n\n"
     },
     {
       "class": "zone:4",
       "enabled": true,
       "id": "",
       "is_prompt": false,
-      "is_script": false,
+      "is_script": true,
       "pattern": "^un fantasma e' morto! R\\.I\\.P\\.",
       "regex": true,
-      "value": "get chiave ossa"
+      "value": "if (!this.isCapogruppo(this.TSPersonaggio)) return;\nsend('get chiave ossa');"
     },
     {
       "class": "zone:4",
@@ -1686,20 +1686,20 @@
       "enabled": true,
       "id": "",
       "is_prompt": false,
-      "is_script": false,
+      "is_script": true,
       "pattern": "^il guardiano degli Elfi del Mare e' morto!",
       "regex": true,
-      "value": "get chiave guardiano\nporte"
+      "value": "if (!this.isCapogruppo(this.TSPersonaggio)) return;\nsend('get chiave guardiano');\nsend('porte');"
     },
     {
       "class": "zone:4",
       "enabled": true,
       "id": "",
       "is_prompt": false,
-      "is_script": false,
+      "is_script": true,
       "pattern": "^Un enorme drago nero e' morto!",
       "regex": true,
-      "value": "get sbarra corpo"
+      "value": "if (!this.isCapogruppo(this.TSPersonaggio)) return;\nsend('get sbarra corp');"
     },
     {
       "class": "zone:203",

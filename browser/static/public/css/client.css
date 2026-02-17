@@ -2647,7 +2647,7 @@ NO TITLE WINDOW
     overflow: visible;
 }
 .disabled{
-    color: lightgray;
+    opacity: 0.3 !important;
 }
 
 #electronMenu {

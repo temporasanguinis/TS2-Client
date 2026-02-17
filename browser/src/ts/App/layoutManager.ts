@@ -167,7 +167,7 @@ export class LayoutManager {
     public variableChangedMap = new Map<string, Control[]>();
     public variableStyleChangedMap = new Map<string, Control[]>();
     public changedVariables = new Set<string>();
-    public controlContentMap = new Map<Control, string>();
+    //public controlContentMap = new Map<Control, string>();
 
     private defaultPanes = [
         {position: PanelPosition.PaneTopLeft, id: "row-top-left"},
@@ -218,38 +218,50 @@ export class LayoutManager {
 
     public onVariableChanged() {
         this.createScriptThis()
-        let ctrls;
-        let numCtrl = 0;
+        let ctrls:Control[];
         const changes = [...this.changedVariables]
         this.changedVariables.clear()
         for (const variableName of changes) {
             if (ctrls=this.variableChangedMap.get(variableName)) {
-                for (const c of ctrls) {
-                    numCtrl++;       
-                    let cont = this.createContent(c, false);
-                    if (this.controlContentMap.get(c) == cont) {
-                        continue;
-                    }
-                    this.controlContentMap.set(c, cont);
-                    let ui = this.controls.get(c);
-                    const ccont = $(".ui-control-content", ui)
-                    ccont[0].innerHTML = cont;
-                    if (c.checkbox) this.checkCheckbox(c);
-                    if (c.gauge) this.checkGauge(c);
-                    if (c.visible) this.checkVisible(c);
-                    if (c.blink) this.checkBlink(c);
+                for (const c of ctrls) {      
+                    this.RefreshControl(c);
                 }
             }
             if (ctrls=this.variableStyleChangedMap.get(variableName)) {
                 for (const c of ctrls) {
-                    if (c.checkbox) this.checkCheckbox(c);
-                    if (c.gauge) this.checkGauge(c);
-                    if (c.visible) this.checkVisible(c);
-                    if (c.blink) this.checkBlink(c);
+                    this.ApplyStyles(c);
                 }
             }
         }
     }
+
+    private RefreshControl(c: Control, parentControl?: JQuery) {
+        let cont = this.createContent(c, false);
+        let ui = this.controls.get(c);
+        if (!ui) {
+            console.error("Control not found for RefreshControl: " + c.id);
+            return;
+        }
+        const ccont = $(".ui-control-content", ui);
+        ccont[0].innerHTML = cont;
+        this.ApplyStyles(c);
+
+        if (parentControl) {
+            $(".ui-control-content", parentControl).first().append(ui);
+        }
+
+        if (c.items) for (const ci of c.items) {
+            this.RefreshControl(ci, ui)
+        }
+    }
+
+    private ApplyStyles(c: Control) {
+        if (c.checkbox) this.checkCheckbox(c);
+        if (c.gauge) this.checkGauge(c);
+        if (c.visible) this.checkVisible(c);
+        if (c.blink) this.checkBlink(c);
+    }
+
     public getCurrent():LayoutDefinition {
         let cp:string;
         if (!(cp = this.profileManager.getCurrent())) {

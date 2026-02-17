@@ -1293,14 +1293,14 @@ nel canale #mappe del Discord di Tempora Sanguinis.`, "display: block;unicode-bi
         if (!this.mapper.mapmode && !this.mapper.useLocal) {
             if (onlineVer && localVer && localVer.version > onlineVer.version) {
                 const r = await Messagebox.Question(
-`ATTENZIONE!!!\n\r
-Stai tentando di modificare il DB mappe pubblico.\n\r
-Il tuo DB locale ha versione piu' alta di quello pubblico\n\r
-Uscendo dalla modalita' mapping potresti sovrascrivere le tue modifiche locali!\n\r
-\n\r
-Versione pubblica: ${onlineVer.version}\n\r
-Versione locale: ${localVer.version}\n\r
-\n\r
+`ATTENZIONE!!!\n
+Stai tentando di modificare il DB mappe pubblico.\n
+Il tuo DB locale ha versione piu' alta di quello pubblico\n
+Uscendo dalla modalita' mapping potresti sovrascrivere le tue modifiche locali!\n
+\n
+Versione pubblica: ${onlineVer.version}\n
+Versione locale: ${localVer.version}\n
+\n
 Sei SICURO di voler continuare?`
                 )
                 if (r.button != Button.Ok) {

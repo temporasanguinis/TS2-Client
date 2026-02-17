@@ -371,7 +371,7 @@ export class OutputManager {
 
     private partialUtf8: Uint8Array;
     private partialSeq: string;
-    public handleTelnetData(data: ArrayBuffer, directFromServer:boolean):boolean {
+    public handleTelnetData(data: ArrayBufferLike, directFromServer:boolean):boolean {
         this.reentrance++;
         let anyMxpVariableChanged = false
         // console.timeEnd("command_resp");
@@ -418,7 +418,7 @@ export class OutputManager {
                 output = "";
 
                 this.newLine();
-                if (this.dataQueue.length) {
+                if (this.dataQueue.length && !this.partialSeq) {
                     for (const data of this.dataQueue) {
                         this.handleText(data);
                     }
@@ -497,7 +497,7 @@ export class OutputManager {
             }
 
             /* MXP escapes */
-            re = /^\x1b\[[1-7]z(<.*>)/;
+            re = /^\x1b\[[1-7]z(<.*?>)/;
             match = re.exec(substr);
             if (match) {
                 // MXP tag. no discerning what it is or if it"s opening/closing tag here
@@ -508,12 +508,15 @@ export class OutputManager {
                 continue;
             }
 
-            re = /^\x1b\[7z/;
+            re = /^\x1b\[[1234567]z/;
             match = re.exec(substr);
-            if (match) {
+            if (match && substr[match[0].length] != '<') {
                 /* this gets sent once at the beginning to set the line mode. We don"t need to do anything with it */
                 i += match[0].length;
                 continue;
+            } else if (match) {
+                // partial tag, wait for the rest of it to arrive
+
             }
 
             re = /^<([a-zA-Z0-9]*)\b[^>]*>([\s\S]*?)<\/\1>/;
@@ -528,7 +531,7 @@ export class OutputManager {
                 continue;
             }
 
-            re = /^<!\w+ [^>]+>/;
+            re = /^<!(?:[^"'>]|"[^"]*"|'[^']*')*>/ // /^<!\w+ [^>]+>/;
             match = null;
             if (this.mxpActive()) match = re.exec(substr);
             if (match) {
@@ -605,6 +608,8 @@ export class OutputManager {
                 i += bad_stuff.length;
                 console.log("Malformed sequence or tag");
                 console.log(bad_stuff);
+                this.handleText(output + bad_stuff);
+                output = "";
                 //this.handleText(bad_stuff);
                 // this.outputManager.handleText("{" + bad_stuff + "}");
                 continue;

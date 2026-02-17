@@ -25,7 +25,7 @@ export class TelnetClient extends Telnet {
     public set mxp(v:boolean){
         this._mxp = v;
         const msg = "[MXP " + (v ? "ABILITATO" : "DISABILITATO") + "]";
-        this.EvtData.fire(new Uint8Array( arrayFromString(msg)));
+        this.EvtData.fire(new Uint8Array( arrayFromString(msg)).buffer);
     }
 
     private ttypeIndex: number = 0;

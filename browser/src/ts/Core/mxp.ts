@@ -370,7 +370,7 @@ export class Mxp {
             if (match) {
                 
                 /* just the tag */
-                let tag_re = /^<send ?(?:href=)?(["']([^']*)["'])? ?(?:hint=)?(["']([^']*)["'])?([^>]*)?>(.+)<\/send>/i;
+                let tag_re = /^<send ?(?:href=)?(["']([^'>]*)["'])? ?(?:hint=)?(["']([^'>]*)["'])?([^>]*)?>(.+?)<\/send>/i;
                 let tag_m = tag_re.exec(tag);
                 if (tag_m) {
                     this.openTags.push("send");
@@ -387,50 +387,8 @@ export class Mxp {
                     // elem[0].setAttribute("aria-live", "off");
                     elem.addClass("underline");
                     elem.addClass("clickable");
-
-                    if (tag_m[5] && tag_m[5].match(/prompt/i)) {
-                        elem.click(() => {
-                            this.commandInput.setInput(tagCommand[0]);
-                        });
-                    }
-                    else {
-                        elem.click((event) => {
-                            if (tagCommand.length == 1) {
-                                this.EvtEmitCmd.fire({value: tagCommand[0], noPrint: false});
-                            } else {
-                                const rng = (Math.trunc(Math.random()*10000))
-                                let items = ""
-                                const start = tagCommand.length == title.length-1 ? 1 : 0
-
-                                for (let i = start; i < title.length; i++) {
-                                    items += `<li class='custom' style="white-space: nowrap;" data-command="${tagCommand[i-start]}">${title[i]}</li>`
-                                }
-
-                                let menu = `<div id='mxpSendMenu${rng}' style="display:none;">
-                                    <ul style="overflow:visible;">
-                                    ${items}
-                                    </ul>
-                                </div>`
-                                const cmenu = <JQuery>((<any>$(menu))).jqxMenu({ autoSizeMainItems: false, minimizeWidth: null, animationShowDelay: 0, animationShowDuration : 0,width: null, height: null, autoOpenPopup: false, mode: 'popup'});
-                                var scrollTop = $(window).scrollTop();
-                                var scrollLeft = $(window).scrollLeft();
-                                (<any>cmenu).jqxMenu('open', (event.clientX) + 5 + scrollLeft, (event.clientY) + 5 + scrollTop);
-                                (<any>cmenu).on("close", () => {
-                                    (<any>cmenu).jqxMenu('destroy')
-                                });
-                                (<any>cmenu).on("shown", () => {
-                                    cmenu.attr("style", cmenu.attr("style")+";width:auto !important;");
-                                    $("li",cmenu).click(ev => {
-                                        this.EvtEmitCmd.fire({value: $(ev.target).data("command"), noPrint: false});
-                                    })
-                                    $("ul",cmenu).css('overflow',"unset")
-                                    setTimeout(() => {
-                                        $("ul",cmenu).css('overflow',"visible")
-                                    }, 200)
-                                })
-                            }
-                        });
-                    }
+                    const isPrompt = (tag_m[5] && tag_m[5].match(/prompt/i)) ? true : false;
+                    this.createLinkClickAction(isPrompt, elem, tagCommand, title);
                     this.outputManager.pushMxpElem(elem);
                     this.outputManager.handleTelnetData(this.str2ab(content), false);
                     this.openTags.pop();
@@ -443,13 +401,35 @@ export class Mxp {
                         }
                     });
                     return true;
+                } else {
+                    let tag_re = /^<send ?(?:href=)?(["']([^'>]*)["'])? ?(?:hint=)?(["']([^'>]*)["'])?([^>]*)?>(.+?)?/i;
+                    let tag_m = tag_re.exec(tag);
+                    if (tag_m) {
+                        let html_tag = "<a style='display:inline-block;vertical-align:middle;'>";
+                        let elem = $(html_tag);
+                    
+                        const tagCommand = stripAnsi(tag_m[2] ? tag_m[2] : tag_m[6]).split("|");
+                        const title = (tag_m[4] || tagCommand[0]);
+                        const content = tag_m[6];
+                        elem[0].setAttribute("title", title);
+                        elem[0].setAttribute("aria-label", title);
+                        const isPrompt = tag_m[5] && tag_m[5].match(/prompt/i);
+                        elem[0].setAttribute("data-prompt", isPrompt ? "true" : "false");
+                        // elem[0].setAttribute("aria-live", "off");
+                        elem.addClass("underline");
+                        elem.addClass("clickable");
+                        this.openTags.push("send");
+                        this.outputManager.pushMxpElem(elem);
+                        if (content) this.outputManager.handleTelnetData(this.str2ab(content), false);
+                        return true;
+                    }
                 }
             }
 
             re = /^<\/send>/i;
             match = re.exec(tag);
             if (match) {
-                if (this.openTags[this.openTags.length - 1] !== "send") {
+                if (this.openTags.length && this.openTags[this.openTags.length - 1] !== "send") {
                     console.log("Got closing send tag with no opening tag.");
                 } else {
                     this.openTags.pop();
@@ -462,12 +442,70 @@ export class Mxp {
                             this.EvtEmitCmd.fire({value: txt, noPrint: false});
                         });
                     }
+                    const isPrompt = elem[0].getAttribute("data-prompt") === "true";
+                    const tagCommand = (elem[0].getAttribute("title") || "").split("|");
+                    const title = (elem[0].getAttribute("title") || "").split("|");
+                    this.createLinkClickAction(isPrompt, elem, tagCommand, title);
+                    
+                    EvtScriptEvent.fire({event: ScripEventTypes.MXP_EntityArrived, condition: "send", value: 
+                        {
+                            type: "send",
+                            element: elem,
+                            value: htmlEscape(tag)
+                        }
+                    });
                 }
                 return true;
             }
 
             return false;
         });
+    }
+
+    private createLinkClickAction(isPrompt: boolean, elem: JQuery, tagCommand: string[], title: string[]) {
+        if (isPrompt) {
+            elem.click(() => {
+                this.commandInput.setInput(tagCommand[0]);
+            });
+        }
+        else {
+            elem.click((event) => {
+                if (tagCommand.length == 1) {
+                    this.EvtEmitCmd.fire({ value: tagCommand[0], noPrint: false });
+                } else {
+                    const rng = (Math.trunc(Math.random() * 10000));
+                    let items = "";
+                    const start = tagCommand.length == title.length - 1 ? 1 : 0;
+
+                    for (let i = start; i < title.length; i++) {
+                        items += `<li class='custom' style="white-space: nowrap;" data-command="${tagCommand[i - start]}">${title[i]}</li>`;
+                    }
+
+                    let menu = `<div id='mxpSendMenu${rng}' style="display:none;">
+                                    <ul style="overflow:visible;">
+                                    ${items}
+                                    </ul>
+                                </div>`;
+                    const cmenu = <JQuery>((<any>$(menu))).jqxMenu({ autoSizeMainItems: false, minimizeWidth: null, animationShowDelay: 0, animationShowDuration: 0, width: null, height: null, autoOpenPopup: false, mode: 'popup' });
+                    var scrollTop = $(window).scrollTop();
+                    var scrollLeft = $(window).scrollLeft();
+                    (<any>cmenu).jqxMenu('open', (event.clientX) + 5 + scrollLeft, (event.clientY) + 5 + scrollTop);
+                    (<any>cmenu).on("close", () => {
+                        (<any>cmenu).jqxMenu('destroy');
+                    });
+                    (<any>cmenu).on("shown", () => {
+                        cmenu.attr("style", cmenu.attr("style") + ";width:auto !important;");
+                        $("li", cmenu).click(ev => {
+                            this.EvtEmitCmd.fire({ value: $(ev.target).data("command"), noPrint: false });
+                        });
+                        $("ul", cmenu).css('overflow', "unset");
+                        setTimeout(() => {
+                            $("ul", cmenu).css('overflow', "visible");
+                        }, 200);
+                    });
+                }
+            });
+        }
     }
 
     str2ab(str:string) {

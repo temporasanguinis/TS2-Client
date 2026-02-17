@@ -15,7 +15,7 @@ export class Telnet {
         this.writeFunc = writeFunc;
     }
 
-    public EvtData = new EventHook<ArrayBuffer>();
+    public EvtData = new EventHook<ArrayBufferLike>();
     public EvtSetVariables = new EventHook<Map<string, string>>();
     public EvtNegotiation = new EventHook<NegotiationData>();
 
@@ -40,7 +40,7 @@ export class Telnet {
     }
 
     private insideASubNegotiation = false
-    public handleData(data: ArrayBuffer) {
+    public handleData(data: ArrayBufferLike) {
         let view = new Uint8Array(data);
         let rxLen = view.length;
         if (this.debugTelnet && this.insideASubNegotiation) {

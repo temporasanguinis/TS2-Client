@@ -179,11 +179,11 @@ export class ProfilesWindow {
         if (this.client.connected) {
             let ret = await Messagebox.Question(`Sei gia' connesso.
 
-            Se preferisci disconnetterti in modo normale dal gioco premi No.
-            Se invece vuoi forzare la disconessione premi Si.
+Se preferisci disconnetterti in modo normale dal gioco premi No.
+Se invece vuoi forzare la disconessione premi Si.
 
-            <b>Vuoi forzare la disconessione?</b>
-            `);
+<b>Vuoi forzare la disconessione?</b>
+`);
 
             if (ret.button == ButtonOK) {
                 await this.client.disconnect();
