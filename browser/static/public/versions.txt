@@ -1,3 +1,14 @@
+v2.0.16
+Versione minore, fixes a mxp e layout
+
+interfaccia:
+- fatto piu coerente il look di elementi disabled nei menu
+
+bugfixes:
+- risolto un problema nella rigenerazione layout al cambio di variabili
+- risolto un poblema in handling di link mxp non chiusi
+- risolto alcuni vulnerability del client
+____________________________________________________________
 v2.0.15
 Versione minore con bugfixes
 
