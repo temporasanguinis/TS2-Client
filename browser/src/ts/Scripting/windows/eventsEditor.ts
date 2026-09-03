@@ -642,4 +642,3 @@ export class EventsEditor {
         this.updateListBox();
     }
 }
-

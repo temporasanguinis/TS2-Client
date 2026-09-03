@@ -1,7 +1,7 @@
 import * as http from "http";
 import * as https from "https";
 import * as socketio from "socket.io";
-import * as express from "express";
+import express from "express";
 
 interface SocketData {
     id: string;

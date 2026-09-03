@@ -1,4 +1,4 @@
-let fs = require("fs-extra");
+import fs from "fs-extra";
 
 let flnameConfigServer = "configServer.js"
 let flnameConfigServerDefault = "configServer.default.js"

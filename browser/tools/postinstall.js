@@ -1,4 +1,4 @@
-let fs = require("fs-extra");
+import fs from "fs-extra";
 
 // To be run from package root, paths accordingly
 fs.createReadStream("node_modules/jquery/dist/jquery.min.js").pipe(fs.createWriteStream('static/public/jquery.min.js'));

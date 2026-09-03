@@ -58,14 +58,17 @@
         window.scrollTo(0, 1);
       }, 0);
     });
-    if (typeof require !== 'undefined') {
+    /*if (typeof require !== 'undefined') {
       const {ipcRenderer} = require('electron');
       console.log("IPC_RENDERER: "+!!ipcRenderer)
       window.ipcRenderer = ipcRenderer;
       if (ipcRenderer) ipcRenderer.on('set-text', (event, selector, text) => {
           $(selector).text(text);
       });
-    }
+    }*/
+    if (ipcRenderer) ipcRenderer.onSetText((selector, text) => {
+          $(selector).text(text);
+    });
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       window.deferredPrompt = e;

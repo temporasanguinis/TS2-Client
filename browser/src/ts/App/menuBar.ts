@@ -261,10 +261,10 @@ export class MenuBar {
             console.log("In electron")
 
             $("#electronZoomOut").on('click', ()=> {
-                if ((<any>window).ipcRenderer) (<any>window).ipcRenderer.invoke('setZoom', 'out').then(()=>console.log("Invoked"))
+                if ((<any>window).ipcRenderer) (<any>window).ipcRenderer.setZoom('out').then(()=>console.log("Invoked"))
             })
             $("#electronZoomIn").on('click', ()=> {
-                if ((<any>window).ipcRenderer) (<any>window).ipcRenderer.invoke('setZoom', 'in').then(()=>console.log("Invoked"))
+                if ((<any>window).ipcRenderer) (<any>window).ipcRenderer.setZoom('in').then(()=>console.log("Invoked"))
             })
             $(".electron", "#menuBar").css({"display": "inline-block"}).show();
         } else {

@@ -689,4 +689,3 @@ export class TriggerManager {
         this.lineDeleted = this.EvtEmitTriggerOutputChanged.fire({line: this.line, buffer:this.buffer});
     }
 }
-

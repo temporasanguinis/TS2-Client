@@ -1,24 +1,23 @@
-var path = require('path');
-var fs = require('fs');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyPlugin = require("copy-webpack-plugin");
+import path from 'path';
+import fs from 'fs';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyPlugin from "copy-webpack-plugin";
+const __dirname = import.meta.dirname;
 
-module.exports = {
-  entry: './src/ts/App/client',
+export default {
+  entry: './build/browser/src/ts/App/client.js',
+  //entry: './src/ts/App/client',
   output: {
     path: path.resolve(__dirname, "static/public"),
     filename: 'mudslinger-[contenthash].js',
     // Bundle absolute resource paths in the source-map,
     // so VSCode can match the source file.
     devtoolModuleFilenameTemplate: '[absolute-resource-path]',
+    clean: {
+      keep: /^jquery.*|.*(?!\.hot-update\.json|\.js)(?<!\.hot-update\.json|\.js)$/,
+    },
   },
   plugins: [
-    new CleanWebpackPlugin({
-      /*dry: true,*/
-      verbose: true,
-      cleanOnceBeforeBuildPatterns: ['*.hot-update.json', '*.js', '!jquery*'],
-    }),
     new CopyPlugin({
       patterns: [
         {
