@@ -222,7 +222,7 @@
           "type": "VariableChanged",
           "condition": "TSRoom",
           "id": "",
-          "value": "if (!@initDone) return\nprint(\"Sei a: '\" + this.RoomName + \"', Vnum: \"+this.TSRoom);",
+          "value": "if (!this.debug) return\nif (!@initDone) return\nprint(\"Sei a: '\" + this.RoomName + \"', Vnum: \"+this.TSRoom);",
           "class": "debug",
           "enabled": true
         },
