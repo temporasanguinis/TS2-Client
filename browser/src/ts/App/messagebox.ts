@@ -1,4 +1,3 @@
-import del from "del";
 import { htmlEscape } from "../Core/util";
 
 export const ButtonOK = 1;
@@ -291,18 +290,6 @@ export async function messagebox(title: string, text: string, callback:(val:stri
             (<any>$win).find('.jqx-window-content').append('<div id="bottomOfContent"></div>');
             let offset = (<any>$win).find('.jqx-window-content #bottomOfContent').position();
             $('.jqx-window-content #bottomOfContent', $win).remove();
-
-            /*
-            let height = [...messageText.map(v => v.height())].reduce(function(a, b) { return a + b; }, 0);
-            let inputheight = [...messageInput.map(v => v.height())].reduce(function(a, b) { return a + b; }, 0);
-            // get new height based on position of marker
-            var newHeight = height +
-                $('.messageboxbuttons', $win).height() +
-                $('.jqx-window-header', $win).height() +
-                (input ? inputheight : 0)+
-                70;
-            */
-            // apply new height
             const newH = Math.max(100, offset.top + 50);
             (<any>$win).jqxWindow({height: newH}); 
         }
