@@ -661,4 +661,3 @@ export class VoiceWin implements IBaseWindow {
         (<any>this.$win).jqxWindow("bringToFront");
     }
 }
-

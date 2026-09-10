@@ -1,8 +1,8 @@
-const { execSync } = require('child_process');
-const del = require('del');
-const fs = require('fs');
-const fsx = require('fs-extra');
-const path = require('path');
+import { execSync } from 'child_process';
+import { deleteAsync } from 'del';
+import fs from 'fs';
+import fsx from 'fs-extra';
+import path from 'path';
 
 const folders = [
     {

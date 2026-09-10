@@ -1,6 +1,6 @@
-const fs = require("fs");
+import fs from "fs";
 
-const pjson = require('../package.json');
+import pjson from '../package.json' with { type: 'json' };
 const inputFile = 'src/html/template_full.html'
 const outputFile = 'src/html/template.html'
 

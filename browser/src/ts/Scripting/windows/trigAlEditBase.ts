@@ -818,4 +818,3 @@ function oneClass(lst: TrigAlItem[]):boolean {
     lst.map(l => r[l.class]!=undefined ? r[l.class]++ : r[l.class]=0 )
     return (Object.keys(r).length <= 1)
 }
-

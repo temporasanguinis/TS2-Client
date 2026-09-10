@@ -4,14 +4,15 @@ import * as socketio from "socket.io";
 import * as net from "net";
 import * as readline from "readline";
 import axios, { AxiosInstance } from "axios";
-import * as express from "express";
+import express from "express";
 import * as fs from "fs";
-import path = require("path");
-import * as yargs from "yargs";
+import path from "path";
+import yargs from "yargs";
 import { IoEvent } from "../../common/src/ts/ioevent";
 import * as os from "os"
 import { SignalingServer } from "./signaling-server";
 import { Secrets } from "./secrets";
+//const __dirname = import.meta.dirname;
 
 const token = Secrets.Token
 
@@ -457,7 +458,7 @@ telnetNs.on("connection", (client: socketio.Socket) => {
         catch (err) {
             deleteOpenConn(client.id)
             WARN(telnetId, "::", "ERROR CONNECTING TELNET:", err);
-            ioEvt.srvTelnetError.fire(err.message);
+            if (err instanceof Error) { ioEvt.srvTelnetError.fire(err.message); }
         }
     });
 
