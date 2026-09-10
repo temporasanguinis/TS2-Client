@@ -1,4 +1,4 @@
-import del from "del";
+import * as del from "del";
 import { htmlEscape } from "../Core/util";
 
 export const ButtonOK = 1;

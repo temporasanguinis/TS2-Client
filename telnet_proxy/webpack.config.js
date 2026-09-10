@@ -1,7 +1,8 @@
-const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
+import path from 'path';
+import TerserPlugin from 'terser-webpack-plugin';
+const __dirname = import.meta.dirname;
 
-module.exports = {
+export default {
   entry: './dist/telnet_proxy/src/app.js',
   target: 'node',
   output: {

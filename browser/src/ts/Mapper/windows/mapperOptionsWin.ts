@@ -284,4 +284,3 @@ export class MapperOptionsWin {
         (<any>this.$win).jqxWindow("close");
     }
 }
-

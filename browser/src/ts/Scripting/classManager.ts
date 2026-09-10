@@ -95,4 +95,3 @@ export class ClassManager {
         this.classes = this.config.get("classes") ? new Map<string, Class>(cls) : new Map<string, Class>();
     }
 }
-

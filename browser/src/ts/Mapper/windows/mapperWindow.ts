@@ -6,7 +6,8 @@ import { EvtScriptEmitCmd, EvtScriptEmitPrint, EvtScriptEvent, ScripEventTypes }
 import { EditMode, MapperDrawing } from "../mapperDrawing";
 import { ResizeSensor } from 'css-element-queries'
 import { downloadJsonToFile, importFromFile, padStart } from '../../Core/util'
-import { NewLineKind } from "typescript";
+//import { NewLineKind } from "typescript";
+import * as NewLineKind from "typescript";
 import { EditRoomWin } from './editRoomWin'
 import { MapperOptionsWin } from './mapperOptionsWin'
 import { off } from "process";
@@ -1810,4 +1811,3 @@ function sameRooms(rooms: Room[], rooms1: Room[]) {
     }
     return true
 }
-
