@@ -8,11 +8,12 @@ import express from "express";
 import * as fs from "fs";
 import path from "path";
 import yargs from "yargs";
-import { IoEvent } from "../../common/src/ts/ioevent";
+import { IoEvent } from "../../common/src/ts/ioevent.js";
 import * as os from "os"
-import { SignalingServer } from "./signaling-server";
-import { Secrets } from "./secrets";
+import { SignalingServer } from "./signaling-server.js";
+import { Secrets } from "./secrets.js";
 //const __dirname = import.meta.dirname;
+import serverConfigImported from "./../configServer.js";
 
 const token = Secrets.Token
 
@@ -144,7 +145,7 @@ function DEBUG(...args: any[]) { (VERBOSE_LEVEL == 0 || VERBOSE_LEVEL >= 3) && t
 
 const localConfig = argv.config || argv._[0];
 
-let serverConfigImported = require("../../../configServer.js");
+
 let serverConfig : typeof serverConfigImported;
 
 function isElectron() {
@@ -288,11 +289,20 @@ if (!isHttps) {
     }
 }
 
+let serveClient = false;
+
+try {
+    const resolved = import.meta.resolve("socket.io-client");
+    serveClient = typeof resolved === "string";
+} catch {
+    serveClient = false;
+}
+
 io = new socketio.Server(actualServer, <any>{
     // socket.io erroneusly uses fs.readyFileSync on require.resolve in runtime therefore
     // when webpacked serving client would fail, and we cannot serve it in this case
     // no problems for running in normal mode without webpacking the whole bundle
-    serveClient: (typeof require.resolve("socket.io-client") === "string"),
+    serveClient: serveClient,
     pingTimeout: 120000,
     allowEIO3: true,
     exclusive: true,

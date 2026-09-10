@@ -41,6 +41,9 @@ export default {
       }),
     ],
   },
+  externals: {
+    "socket.io-client": "commonjs socket.io-client"
+  },
   module: {
     rules: [
       {

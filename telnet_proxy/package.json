@@ -2,9 +2,9 @@
   "name": "ts2-telnet-proxy",
   "version": "0.5.0",
   "scripts": {
-    "start": "set DEBUG=* && node dist/telnet_proxy/src/app.js -c ./dist/telnet_proxy/bundle/config.json",
-    "build": "node tools/genSecrets.js && tsc -p tsconfig.json",
-    "postinstall": "node tools/postinstall.js",
+    "start": "node tools/copyConfig.mjs && set DEBUG=* && node dist/telnet_proxy/src/app.js -c ./dist/telnet_proxy/bundle/config.json",
+    "build": "node tools/genSecrets.mjs && tsc -p tsconfig.json && node tools/copyConfig.mjs",
+    "postinstall": "node tools/postinstall.mjs",
     "webpack": "webpack --mode production",
     "webpack-start": "webpack --mode production && node ./dist/telnet_proxy/bundle/telnet_proxy.js"
   },

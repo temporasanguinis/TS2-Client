@@ -13,8 +13,8 @@ export default {
     },
   },
   performance: {
-    maxEntrypointSize: 1024000,
-    maxAssetSize: 1024000
+    maxEntrypointSize: 1524000,
+    maxAssetSize: 1524000
   },
   plugins: [
     new 

@@ -1,7 +1,7 @@
 import fs from "fs-extra";
 
-let flnameConfigServer = "configServer.js"
-let flnameConfigServerDefault = "configServer.default.js"
+let flnameConfigServer = "configServer.mjs"
+let flnameConfigServerDefault = "configServer.default.mjs"
 
 // Don't want to overwrite existing config file if any
 if (!fs.existsSync(flnameConfigServer)) {
